@@ -22,13 +22,22 @@ jobs:
         run: |
           npm install -g swagger-cli swagger-ui-dist
 
-      - name: Generate Swagger Documentation
+      - name: Generate Swagger YAML
         run: |
-          mkdir -p ./docs
-          swagger-cli bundle -o ./swagger-tutorial.yaml --putfile ./docs/index.html --type html
+          swagger-cli bundle -o ./swagger-tutorial.yaml --putfile ./docs/swagger.yaml --type yaml
+
+      - name: Copy Swagger UI to docs folder
+        run: |
+          mkdir -p ./docs    
+          cp -r $(npm root -g)/swagger-ui-dist/* ./docs/
+          cp ./swagger.yaml ./docs/swagger.yaml
+
+      - name: Update index.html to use swagger.yaml
+        run: |
+          sed -i 's#url: "https://petstore.swagger.io/v2/swagger.json"#url: "./swagger.yaml"#' ./docs/index.html
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public/swagger
+          publish_dir: ./docs
