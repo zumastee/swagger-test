@@ -24,7 +24,7 @@ jobs:
 
       - name: Generate Swagger YAML
         run: |
-          swagger-cli bundle ./swagger.yaml --outfile ./swagger-tutorial.yaml --type yaml
+          swagger-cli bundle ./swagger-tutorial.yaml --outfile ./swagger.yaml --type yaml
 
       - name: Copy Swagger UI to docs folder
         run: |
