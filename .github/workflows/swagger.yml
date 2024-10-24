@@ -24,8 +24,8 @@ jobs:
 
       - name: Generate Swagger Documentation
         run: |
-          mkdir -p ./pulic/swagger
-          swagger-cli bundle -o ./swagger-tutorial.yaml --putfile ./public/swagger/index.html --type html
+          mkdir -p ./docs
+          swagger-cli bundle -o ./swagger-tutorial.yaml --putfile ./docs/index.html --type html
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
