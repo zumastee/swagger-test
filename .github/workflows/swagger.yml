@@ -1,0 +1,34 @@
+name: Build and Deploy Swagger Documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install Swagger UI
+        run: |
+          npm install -g swagger-cli swagger-ui-dist
+
+      - name: Generate Swagger Documentation
+        run: |
+          mkdir -p ./pulic/swagger
+          swagger-cli bundle -o ./swagger-tutorial.yaml --putfile ./public/swagger/index.html --type html
+
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public/swagger
