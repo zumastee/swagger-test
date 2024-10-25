@@ -1,4 +1,4 @@
-name: Build and Deploy Swagger Documentation
+name: Build and Deploy Swagger Documentation 
 
 on:
   push:
