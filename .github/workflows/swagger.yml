@@ -8,36 +8,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v4
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-
-      - name: Install Swagger UI
-        run: |
-          npm install -g swagger-cli swagger-ui-dist
-
-      - name: Generate Swagger YAML
-        run: |
-          swagger-cli bundle ./swagger-tutorial.yaml --outfile ./swagger.yaml --type yaml
-
-      - name: Copy Swagger UI to docs folder
-        run: |
-          mkdir -p ./docs    
-          cp -r $(npm root -g)/swagger-ui-dist/* ./docs/
-          cp ./swagger.yaml ./docs/swagger.yaml
-
-      - name: Update index.html to use swagger.yaml
-        run: |
-          sed -i 's#url: "https://petstore.swagger.io/v2/swagger.json"#url: "./swagger.yaml"#' ./docs/index.html
-
-      - name: Deploy to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Install swagger-cli
+        run: npm install -g swagger-cli swagger-ui-dist
+      - name: Generate Swagger UI
+        uses: Legion2/swagger-ui-action@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+            output: swagger-ui
+            spec-file: swagger-tutorial.yaml
+      - name: Upload document
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: swagger-ui
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deployment-pages@v4
