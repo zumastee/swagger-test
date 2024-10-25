@@ -13,6 +13,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: List files in current directory
+        run: ls -R
+
       - name: Install swagger-cli
         run: |
           npm install -g swagger-cli
