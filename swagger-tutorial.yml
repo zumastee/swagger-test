@@ -9,10 +9,25 @@ servers:
 
 # Basic authentication
 components:
+  schemas:
+    Artist:
+      type: object
+      required:
+        - username
+      properties:
+        artist_name:
+          type: string
+        artist_genre:
+          type: string
+        albums:
+          type: integer
+        username:
+          type: string
   securitySchemes:
     BasicAuth:
       type: http
       scheme: basic
+
 security:
   - BasicAuth: []
 
@@ -27,33 +42,20 @@ paths:
           description: Limits the number of items on a page
           schema:
             type: integer
-          required: false
         - name: offset
           in: query
           description: Specifies the page number of the artists to be displayed
           schema:
             type: integer
-          required: false
       responses:
         '200':
-          description: Successfully returend a list of artists
+          description: Successfully returned a list of artists
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: object
-                  required:
-                    - username
-                  properties:
-                    artist_name:
-                      type: string
-                    artist_genre:
-                      type: string
-                    albums:
-                      type: integer
-                    username:
-                      type: string
+                  $ref: '#/components/schemas/Artist'
         '400':
           description: Invalid request
           content:
