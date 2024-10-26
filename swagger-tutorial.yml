@@ -20,7 +20,7 @@ paths:
   /artists:
     get:
       description: Returns a list of artists
-#  ----- Added lines  ----------------------------------------
+      operationId: getArtistList
       parameters:
         - name: limit
           in: query
@@ -32,7 +32,6 @@ paths:
           description: Specifies the page number of the artists to be displayed
           schema:
             type: integer
-# ------------------------------------------------------------
       responses:
         '200':
           description: Successfully returend a list of artists
