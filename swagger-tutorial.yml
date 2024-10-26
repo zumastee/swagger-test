@@ -27,11 +27,13 @@ paths:
           description: Limits the number of items on a page
           schema:
             type: integer
+          required: false
         - name: offset
           in: query
           description: Specifies the page number of the artists to be displayed
           schema:
             type: integer
+          required: false
       responses:
         '200':
           description: Successfully returend a list of artists
